@@ -1,7 +1,15 @@
-@(message: String)
+@(users: Seq[User])
 
-@main("Semantic Web") {
+@main("Semantic Web Application") {
 
-    @message
+		<h3>Created users</h3>
+		<ul>
+			@users.map { u => 
+				<li>
+					@u.id
+				</li>			
+			}
+		</ul>
+    @*message*@
 
 }
