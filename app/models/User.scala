@@ -2,13 +2,15 @@ package models
 
 import scala.util.Random
 import java.util.Date
+import java.security.SecureRandom
 
 case class User(id: Long, name: String, surname: String, friends: Seq[User], madeActivities: Seq[String])
 
 object User {
 
   def createUser: User = {
-    new User(new Date().getTime(), "", "", Seq(), Seq())
+    val id = new SecureRandom().nextLong() 
+    new User(if(id > 0L) id else -id, "", "", Seq(), Seq())
   }
   
   // whether given users are friends

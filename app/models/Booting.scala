@@ -9,7 +9,7 @@ object Booting {
     val users = new ListBuffer[User]
     for (a <- 1 to amount) {
       users += User.createUser
-      Thread.sleep(200)
+//      Thread.sleep(1)
     }
     
     users.toSeq

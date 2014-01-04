@@ -2,15 +2,16 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-
 import models._
+import scala.util.Random
 
 object Application extends Controller {
 
-	def index = Action {
-		
-	  val users = Booting.createUsers(3)
-	  Ok(views.html.index(users))
-	}
+  def index = Action {
+    val r = new Random().nextInt(20)
+    val users = Booting.createUsers(r)
+    
+    Ok(views.html.index(users))
+  }
 
 }
