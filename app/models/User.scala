@@ -3,14 +3,15 @@ package models
 import scala.util.Random
 import java.util.Date
 import java.security.SecureRandom
+import scala.collection.mutable
 
-case class User(id: Long, name: String, surname: String, friends: Seq[User], madeActivities: Seq[String])
+case class User(id: Long, name: String, surname: String, friends: mutable.Buffer[User], madeActivities: mutable.Buffer[String])
 
 object User {
 
   def createUser: User = {
     val id = new SecureRandom().nextLong() 
-    new User(if(id > 0L) id else -id, "", "", Seq(), Seq())
+    new User(if(id > 0L) id else -id, "", "", mutable.Buffer(), mutable.Buffer())
   }
   
   // whether given users are friends
