@@ -11,7 +11,7 @@ object User {
 
   def createUser: User = {
     val id = new SecureRandom().nextLong() 
-    new User(if(id > 0L) id else -id, "", "", mutable.Buffer(), mutable.Buffer())
+    new User(math.abs(id), "", "", mutable.Buffer(), mutable.Buffer())
   }
   
   // whether given users are friends
