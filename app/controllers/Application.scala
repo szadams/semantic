@@ -11,6 +11,12 @@ object Application extends Controller {
     val r = new Random().nextInt(20)
     val users = Booting.createUsers(r)
     
+    val results_from_DB = Neo4j.create
+    println(results_from_DB)
+    
+    println("isAdded:  " + Neo4j.isAdded)
+    println("isSucces: " + Neo4j.isSucces)
+    
     Ok(views.html.index(users))
   }
 
