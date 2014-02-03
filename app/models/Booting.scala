@@ -24,7 +24,7 @@ object Booting {
       users += User.createUser
       val system = ActorSystem(users.last.id.toString) // maybe it'll help identify concrete actor
       val actor = system.actorOf(Props[UserActor], name = users.last.id.toString + "User")
-      actor ! UserActivity("I'm person with id "+users.last.id)
+      actor ! UserActivity("I'm person with id " + users.last.id)
     }
 
     users.toBuffer
