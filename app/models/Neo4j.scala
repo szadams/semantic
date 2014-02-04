@@ -26,7 +26,8 @@ object Neo4j {
     }
   }
 
-  // Zwracają True jeżeli się udało
+  def executeQuery(query: String) = Cypher(""" + query + """).execute
+
   val isAdded = Cypher("""
 	  create (germany {name:"Germany", population:81726000, type:"Country", code:"DEU"}),
 	         (france {name:"France", population:65436552, type:"Country", code:"FRA", indepYear:1790}),
