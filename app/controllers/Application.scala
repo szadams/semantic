@@ -14,9 +14,6 @@ object Application extends Controller {
     val results_from_DB = Neo4j.create
     Logger.warn("RESULT FROM DB: " + results_from_DB.toString)
 
-    Logger.info("isAdded:  " + Neo4j.isAdded)
-    Logger.info("isSucces: " + Neo4j.isSuccess)
-
     Ok(views.html.index(users))
   }
 
