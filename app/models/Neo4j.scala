@@ -69,17 +69,13 @@ object Neo4j {
 		executeQuery(query)
 	}
 	
-	// TODO
-	def addActivitiesToUser() = {
-		???
+	def addRelation(id1: Long, id2: Long, relation: String) = {
+		val query = "START n=node(*), m=node(*) WHERE (n.id = " + id1 + ") and (m.id = " + id2 + ") CREATE (n)-[:" + relation + "]->(m)"
+		executeQuery(query)
 	}
 	
 	def removeUser(id: Long) = {
 		val query = "MATCH (u { id: " + id + " }) DELETE u"
-	}
-
-	def updateUser(id: Long, name: String, surname: String, friends: mutable.Buffer[User], madeActivities: mutable.Buffer[String]) = {
-		???
 	}
 
 	def showUser(id: Long) = {
@@ -89,7 +85,6 @@ object Neo4j {
 	
 	def getAllUsers = executeQuery("MATCH (u:User) RETURN u")
 	
-	// TODO
 	def cleanDB = Cypher("MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r").execute()
 
 }
