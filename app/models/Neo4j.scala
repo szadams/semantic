@@ -9,7 +9,10 @@ object Neo4j {
 
 	Neo4jREST.setServer("localhost", 7474, "/db/data/")
 
-	def executeQuery(query: String) = Cypher("" + query + "").execute
+	def executeQuery(query: String) = {
+		Logger.info("QUERY => " + query)
+		Cypher("" + query + "").execute
+	}
 	
 	// TODO dodać wszystkich wygenerowanych userów
 	def create = {
@@ -26,36 +29,53 @@ object Neo4j {
 				List()
 		}
 	}
-	
-//	MATCH (ee:Person) WHERE ee.name = "Emil"
-//	CREATE (js:Person { name: "Johan", from: "Sweden", learn: "surfing" }),
-//	(ir:Person { name: "Ian", from: "England", title: "author" }),
-//	(rvb:Person { name: "Rik", from: "Belgium", pet: "Orval" }),
-//	(ally:Person { name: "Allison", from: "California", hobby: "surfing" }),
-//	(ee)-[:KNOWS {since: 2001}]->(js),(ee)-[:KNOWS {rating: 5}]->(ir),
-//	(js)-[:KNOWS]->(ir),(js)-[:KNOWS]->(rvb),
-//	(ir)-[:KNOWS]->(js),(ir)-[:KNOWS]->(ally),
-//	(rvb)-[:KNOWS]->(ally)
-	
-//	MATCH (ee:Person)-[:KNOWS]-(friends)
-//	WHERE ee.name = "Emil" RETURN ee, friends
 
 	def addUser(id: Long, name: String, surname: String, friends: mutable.Buffer[User]) = { //, madeActivities: mutable.Buffer[String]) = {
-		val query = "CREATE(u:User { id: " + id + " name: " + name + ", surname: " + surname + "})";
+		var friends_query = ""
+		var relations_query = ""
+		
+		if (!friends.isEmpty) {
+			friends_query = ","
+				
+			for (f <- friends) {
+				// EXAMPLE: (123456:User { id: 123456, name: Dzidek, surname: Kowalski }),)
+				friends_query += "(" + f.id + ":User { id: " + id + ", name: " + f.name + ", surname: " + f.surname + "}),"
+				
+				// EXAMPLE: (123456)-[:ISFRIENDOF]->(u),
+				relations_query += "(" + f.id + ")-[:ISFRIENDOF]->(u),"
+			}
+		}
+		
+		val query = "CREATE(u:User { id: " + id + ", name: " + name + ", surname: " + surname + "})" + friends_query + relations_query
 		executeQuery(query)
-		???
 	}
 	
-	def addFriendsToUser() = {
-		???
+	def addFriendsToUser(id: Long, friends: mutable.Buffer[User]) = {
+		var friends_query = ""
+		var relations_query = ""
+		
+		if (!friends.isEmpty) {
+			friends_query = ","
+				
+			for (f <- friends) {
+				// EXAMPLE: (123456:User { id: 123456, name: Dzidek, surname: Kowalski }),)
+				friends_query += "(" + f.id + ":User { id: " + id + ", name: " + f.name + ", surname: " + f.surname + "}),"
+				
+				// EXAMPLE: (123456)-[:ISFRIENDOF]->(u),
+				relations_query += "(" + f.id + ")-[:ISFRIENDOF]->(u),"
+			}
+		}
+		
+		val query = "MATCH (u:User) WHERE u.id = " + id + friends_query + relations_query
+		executeQuery(query)
 	}
 	
 	def addActivitiesToUser() = {
 		???
 	}
-
+	
 	def removeUser(id: Long) = {
-		???
+		val query = "MATCH (u { id: " + id + " }) DELETE u"
 	}
 
 	def updateUser(id: Long, name: String, surname: String, friends: mutable.Buffer[User], madeActivities: mutable.Buffer[String]) = {
@@ -70,7 +90,8 @@ object Neo4j {
 	def getAllUsers = executeQuery("MATCH u: User RETURN u")
 	
 	def cleanDB = {
-		???
+		val query = "START n = node(*) MATCH n-[r?]-() WHERE (ID(n)>0 AND ID(n)<10000) DELETE n, r;"
+		executeQuery(query)
 	}
 
 }
