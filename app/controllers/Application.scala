@@ -10,6 +10,11 @@ import scala.collection.mutable.ArrayBuffer
 object Application extends Controller {
 
   def index = Action {
+    
+    Ok(views.html.index(List()))
+  }
+  
+  def start = Action {
     val r = new Random().nextInt(20)
     val users = Booting.createUsers(r)
 
@@ -23,6 +28,12 @@ object Application extends Controller {
     //Logger.info("Clean DB query status: " + Neo4j.cleanDB)
 
     Ok(views.html.index(users))
+  }
+
+  def clean = Action {
+	Neo4j.cleanDB
+    
+    Ok(views.html.index(List()))
   }
 
 }

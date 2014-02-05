@@ -1,14 +1,26 @@
 @(users: Seq[User])
 
 @main("Semantic Web Application") {
-
+		<div id="navButtons">
+			<table>
+				<tr>
+					<td><a href='@routes.Application.start' class="btn btn-primary">Start</a></td>
+					<td><a href='@routes.Application.clean' class="btn btn-danger">Clean DB</a></td>
+					<td><a href='@routes.Application.index' class="btn btn-default">Homepage</a></td>
+				</tr>
+			</table>
+		</div>
 		<h3>Created users(@users.size)</h3>
-		<ul>
+		<table class="table table-striped table-bordered">
+			<th>Name</th>
+			<th>Surname</th>
+			<th>Id</th>
 			@users.map { u => 
-				<li>
-					@u.id
-				</li>			
+				<tr>
+					<td>@u.name</td>
+					<td>@u.surname</td>
+					<td>@u.id</td>
+				</tr>			
 			}
-		</ul>
-
+		</table>
 }
