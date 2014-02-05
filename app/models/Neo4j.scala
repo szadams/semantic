@@ -14,9 +14,12 @@ object Neo4j {
 	}
 	
 	// TODO dodać wszystkich wygenerowanych userów
-	def create = {
+	def create(users: mutable.Buffer[models.User]) = {
 		try {
-			Cypher("""CREATE (anorm {name:"AnormCypher"}), (test {name:"Test"})""").execute
+			for (u <- users) {
+				addUser(u.id, u.name, u.surname, u.friends)
+			}
+			//Cypher("""CREATE (anorm {name:"AnormCypher"}), (test {name:"Test"})""").execute
 
 			val req = Cypher("start n=node(*) return n.name").apply()
 			val stream = req
