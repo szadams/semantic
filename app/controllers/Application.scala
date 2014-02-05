@@ -16,11 +16,11 @@ object Application extends Controller {
     val results_from_DB = Neo4j.create
     Logger.info("RESULT FROM DB: " + results_from_DB.toString)
     
-    Logger.info("New user: " + Neo4j.addUser(123456, "Dzidek", "Kowalski", ArrayBuffer()))
+    Logger.info("New user query status: " + Neo4j.addUser(123456, "Dzidek", "Kowalski", ArrayBuffer()))
 
-    Logger.info("Get all users: " + Neo4j.getAllUsers)
+    Logger.info("Get all users query status: " + Neo4j.getAllUsers)
     
-    Logger.info("Clean DB: " + Neo4j.cleanDB)
+    Logger.info("Clean DB query status: " + Neo4j.cleanDB)
 
     Ok(views.html.index(users))
   }

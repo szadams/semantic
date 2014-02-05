@@ -11,7 +11,7 @@ object Neo4j {
 
 	def executeQuery(query: String) = {
 		Logger.info("QUERY => " + query)
-		Cypher("" + query + "").execute
+		Cypher(query).execute()
 	}
 	
 	// TODO dodać wszystkich wygenerowanych userów
@@ -29,7 +29,7 @@ object Neo4j {
 				List()
 		}
 	}
-
+	
 	def addUser(id: Long, name: String, surname: String, friends: mutable.Buffer[User]) = { //, madeActivities: mutable.Buffer[String]) = {
 		var friends_query = ""
 		var relations_query = ""
@@ -39,14 +39,14 @@ object Neo4j {
 				
 			for (f <- friends) {
 				// EXAMPLE: (123456:User { id: 123456, name: Dzidek, surname: Kowalski }),)
-				friends_query += "(" + f.id + ":User { id: " + id + ", name: " + f.name + ", surname: " + f.surname + "}),"
+				friends_query += "(" + f.id + ":User { id: " + id + ", name: '" + f.name + "', surname: '" + f.surname + "' }),"
 				
 				// EXAMPLE: (123456)-[:ISFRIENDOF]->(u),
 				relations_query += "(" + f.id + ")-[:ISFRIENDOF]->(u),"
 			}
 		}
 		
-		val query = "CREATE(u:User { id: " + id + ", name: " + name + ", surname: " + surname + "})" + friends_query + relations_query
+		val query = "CREATE (u:User { id: " + id + ", name: '" + name + "', surname: '" + surname + "' })" + friends_query + relations_query
 		executeQuery(query)
 	}
 	
@@ -59,7 +59,7 @@ object Neo4j {
 				
 			for (f <- friends) {
 				// EXAMPLE: (123456:User { id: 123456, name: Dzidek, surname: Kowalski }),)
-				friends_query += "(" + f.id + ":User { id: " + id + ", name: " + f.name + ", surname: " + f.surname + "}),"
+				friends_query += "(" + f.id + ":User { id: " + id + ", name: '" + f.name + "', surname: '" + f.surname + "' }),"
 				
 				// EXAMPLE: (123456)-[:ISFRIENDOF]->(u),
 				relations_query += "(" + f.id + ")-[:ISFRIENDOF]->(u),"
@@ -70,6 +70,7 @@ object Neo4j {
 		executeQuery(query)
 	}
 	
+	// TODO
 	def addActivitiesToUser() = {
 		???
 	}
@@ -87,11 +88,9 @@ object Neo4j {
 		executeQuery(query)
 	}
 	
-	def getAllUsers = executeQuery("MATCH u: User RETURN u")
+	def getAllUsers = executeQuery("MATCH (u:User) RETURN u")
 	
-	def cleanDB = {
-		val query = "START n = node(*) MATCH n-[r?]-() WHERE (ID(n)>0 AND ID(n)<10000) DELETE n, r;"
-		executeQuery(query)
-	}
+	// TODO
+	def cleanDB = Cypher("START n = node(*) MATCH n-[r?]-() WHERE (ID(n)>0 AND ID(n)<10000) DELETE n, r;").execute()
 
 }
