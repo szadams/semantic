@@ -10,7 +10,6 @@ object Neo4j {
 	Neo4jREST.setServer("localhost", 7474, "/db/data/")
 
 	def executeQuery(query: String) = {
-		Logger.info("QUERY => " + query)
 		Cypher(query).execute()
 	}
 	
@@ -91,6 +90,6 @@ object Neo4j {
 	def getAllUsers = executeQuery("MATCH (u:User) RETURN u")
 	
 	// TODO
-	def cleanDB = Cypher("START n = node(*) MATCH n-[r?]-() WHERE (ID(n)>0 AND ID(n)<10000) DELETE n, r;").execute()
+	def cleanDB = Cypher("MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r").execute()
 
 }
