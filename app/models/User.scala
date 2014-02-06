@@ -11,10 +11,15 @@ object User {
 
   val names = List("Adam", "Maciej", "Katarzyna", "Ildefons", "Joanna", "Piotr", "Włodzimierz")
   val surnames = List("Smith", "Turing", "Jackson", "Bieber", "Freud", "Markov", "Zawinsky")
+  val activities = Seq("is_a_friend_of", "liked_post_of", "liked_comment_of", "liked_photo_of", "created_post",
+      "commented", "uploaded_photo", "shared_post_of", "poked")
   
   def createUser: User = {
     val id = new SecureRandom().nextLong()
-    new User(math.abs(id), "", "", mutable.Buffer(), mutable.Buffer())
+    val name = names(math.abs(new Random().nextInt(names.size-1)))
+    val surname = surnames(math.abs(new Random().nextInt(surnames.size-1)))
+    
+    new User(math.abs(id), name, surname, mutable.Buffer(), mutable.Buffer())
   }
 
   // whether given users are friends
@@ -28,7 +33,6 @@ object User {
   }
 
   def getPossibleActivities: Seq[String] = {
-    Seq("is a friend of ", "liked post of ", "liked comment of ", "liked photo of ", "created post",
-      "commented ", "uploaded photo", "shared post of ", "poked ")
+    activities
   }
 }
