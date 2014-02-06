@@ -10,6 +10,7 @@ object Neo4j {
   Neo4jREST.setServer("localhost", 7474, "/db/data/")
 
   def executeQuery(query: String) = {
+	Logger.info(query)
     Cypher(query).execute()
   }
 
@@ -84,14 +85,14 @@ object Neo4j {
   def showUser(id: Long): User = {
     val query = "MATCH (u: User) WHERE u.id = " + id + " RETURN u.id as id, u.name as name, u.surname as surname"
     val result = Cypher(query).apply().map(row =>
-      User(row[Long]("id"), row[String]("name"), row[String]("surname"), mutable.Buffer(), mutable.Buffer())).toList(0)
+      User(row[Long]("id"), row[String]("name"), row[String]("surname"), mutable.Buffer())).toList(0)
     result
   }
 
   def getAllUsers: List[User] = {
     val query = "MATCH (u: User) RETURN u.id as id, u.name as name, u.surname as surname"
     val result = Cypher(query).apply().map(row =>
-      User(row[Long]("id"), row[String]("name"), row[String]("surname"), mutable.Buffer(), mutable.Buffer())).toList
+      User(row[Long]("id"), row[String]("name"), row[String]("surname"), mutable.Buffer())).toList
     result
   }
 

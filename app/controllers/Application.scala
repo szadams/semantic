@@ -14,7 +14,7 @@ object Application extends Controller {
   }
 
   def start = Action {
-    val r = new Random().nextInt(20)
+    val r = new Random().nextInt(100)
     val users = Booting.createUsers(if (r == 0) r+1 else r)
 
     val results_from_DB = Neo4j.create(users)
@@ -23,6 +23,13 @@ object Application extends Controller {
     //    Logger.info("New user query status: " + Neo4j.addUser(123456, "Dzidek", "Kowalski", ArrayBuffer()))
 
     //    Logger.info("Get all users query status: " + Neo4j.getAllUsers)
+//    
+//    Neo4j.addUser(1, "A", "A", mutable.Buffer())
+//    Neo4j.addUser(2, "B", "B", mutable.Buffer())
+//    
+//    Neo4j.addRelation(1, 2, "XOXOX")
+    
+    User.createRelations
 
     //Logger.info("Clean DB query status: " + Neo4j.cleanDB)
 
