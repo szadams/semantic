@@ -73,6 +73,7 @@ object Neo4j {
 
   def addRelation(id1: Long, id2: Long, relation: String) = {
     val query = "START n=node(*), m=node(*) WHERE (n.id = " + id1 + ") and (m.id = " + id2 + ") CREATE (n)-[:" + relation + "]->(m)"
+    Logger.warn(query)
     executeQuery(query)
   }
 

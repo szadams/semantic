@@ -22,7 +22,7 @@ object Booting {
 
     for (a <- 1 to amount) {
       users += User.createUser
-      val system = ActorSystem(users.last.id.toString) // maybe it'll help identify concrete actor
+      val system = ActorSystem("users")//ActorSystem(users.last.id.toString) // maybe it'll help identify concrete actor
       val actor = system.actorOf(Props[UserActor], name = users.last.id.toString + "User")
       actor ! UserActivity("I'm person with id " + users.last.id)
     }
