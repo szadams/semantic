@@ -15,7 +15,7 @@ object User {
     "commented", "uploaded_photo", "shared_post_of", "poked")
 
   def createUser: User = {
-    val id = math.abs(new SecureRandom().nextLong())
+    val id: Long = math.abs(new SecureRandom().nextLong()) / 1000000000
     val name = names(math.abs(new Random().nextInt(names.size)))
     val surname = surnames(math.abs(new Random().nextInt(surnames.size)))
     val allUsers = Neo4j.getAllUsers
